@@ -80,6 +80,7 @@ func saveToken(path string, token *oauth2.Token) {
 }
 
 var debugEnabled *bool
+var format *string 
 
 func debug(msg string, args ...any) {
 	if *debugEnabled {
@@ -90,6 +91,7 @@ func debug(msg string, args ...any) {
 
 func main() {
 	debugEnabled = flag.Bool("debug", false, "Print debugging msgs to stderr")
+	format = flag.String("format", "text", "Output format (text or json)")
 	flag.Parse()
 	debug("Debug logging enabled")
 
@@ -228,10 +230,20 @@ func main() {
 		debug("len(todayRow): %v", len(todayRow))
 		debug("colNames: %v", colNames)
 		debug("todayRow: %v", todayRow)
+		if *format == "json" { fmt.Printf("{\n") }
 		for index, field := range colNames {
 			if index < len(todayRow) {
+		if *format == "json" { 
+		fmt.Printf("\"%s\": \"%v\"\n", field, todayRow[index]) 
+		
+			if index < len(todayRow) -1 {
+			fmt.Printf(",")
+				}
+		} else {
 				fmt.Printf("%s: %v\n", field, todayRow[index])
 			}
 		}
+	}
+		if *format == "json" { fmt.Printf("}\n") }
 	}
 }
