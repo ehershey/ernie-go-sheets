@@ -1,4 +1,4 @@
 .env
 ernie-go-sheets
 token.json
-credentials.json
+credentials.json*
